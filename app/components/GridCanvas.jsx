@@ -1,22 +1,27 @@
-export default function GridCanvas({ gridItems, onDrop }) {
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
+import React from 'react';
+import { Droppable } from 'react-beautiful-dnd';
 
+export default function GridCanvas({ gridItems, setGridItems }) {
   return (
-    <div
-      className="flex-1 bg-gray-100 p-4 grid grid-cols-4 gap-4"
-      onDrop={onDrop}
-      onDragOver={handleDragOver}
-    >
-      {gridItems.map((item, index) => (
+    <Droppable droppableId="grid-canvas">
+      {(provided) => (
         <div
-          key={index}
-          className="bg-blue-500 text-white p-4 rounded flex items-center justify-center"
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+          className="w-3/4 h-[80vh] bg-gray-200 grid grid-cols-4 gap-2 p-4"
         >
-          {item.name}
+          {gridItems.map((item, index) => (
+            <div
+              key={item.id}
+              className="bg-white rounded shadow p-2 text-center"
+              style={{ gridColumn: item.col, gridRow: item.row }}
+            >
+              {item.label}
+            </div>
+          ))}
+          {provided.placeholder}
         </div>
-      ))}
-    </div>
+      )}
+    </Droppable>
   );
 }
